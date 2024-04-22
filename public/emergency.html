@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Emergency</title>
+<!-- Include Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .alert-icon {
+        color: red;
+        margin-left: 10px;
+    }
+
+    .alert-icon .fas {
+        font-size: 18px;
+    }
+
+    #currentDateTime {
+        font-style: italic;
+        margin-bottom: 20px;
+    }
+    nav {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    nav a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    nav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    .dropdown {
+        float: left;
+        overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+        font-size: 16px;  
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 20px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+    }
+
+    .navbar a:hover, .dropdown:hover .dropbtn {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .right
+{
+    float: right;
+    margin-top: 10px;
+
+}
+
+
+</style>
+</head>
+<body>
+    <nav>
+        
+        <!-- <div class="left">
+            <img src="logo.png" alt="Logo" class="logo">
+        </div> -->
+        
+        <div class="right">
+            <a href="/home" class="logo-link">
+               
+               <a href="/home"> <i class="fas fa-home home-icon"></i></a>
+            </a>
+        <div class="dropdown">
+            <button class="dropbtn">Contact Helpline</button>
+            <div class="dropdown-content">
+                <a href="tel:112">Police</a>
+                <a href="tel:101">Fireforce</a>
+                <a href="tel:102">Ambulance</a>
+                <a href="tel:108">Disaster Management Services</a>
+                <a href="tel:181">Women Helpline</a>
+                <a href="tel:9540161344">Air Ambulance</a>
+                <a href="tel:011-24363260">Earthquake/Flood/Disaster</a>
+                <a href="tel:1073">Railway Accident Emergency Service  </a>
+                <a href="tel:1033">Road Accident Emergency Service</a>
+                <a href="tel:1906">LPG Leak Helpline</a>
+                <a href="tel:155620">CYBER CRIME HELPLINE</a>
+                <a href="tel:011-23978046">COVID 19 HELPLINE</a>
+            </div>
+        </div>
+        <a href="/emergency">Emergencies</a>
+        <a href="/about">About Us</a>
+        
+    </nav>
+    <!-- navend -->
+    
+
+    <div class="container">
+        <h1>Reported Emergencies</h1>
+        <!-- Paragraph element to display current date/time -->
+        <p id="currentDateTime"></p>
+
+        <table id="emergencyTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Date/Time</th>
+                    <th>Alert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Emergency data will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+       
+<script>
+        async function fetchEmergencies() {
+            try {
+                const response = await fetch('/api/disasters');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch emergencies');
+                }
+                const emergencies = await response.json();
+                const tableBody = document.querySelector('#emergencyTable tbody');
+                tableBody.innerHTML = ''; // Clear existing table rows
+                emergencies.forEach(emergency => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${emergency.name}</td>
+                        <td>${emergency.location}</td>
+                        <td>${emergency.description}</td>
+                        <td>${emergency.submissionDate}</td> <!-- Display submission date -->
+                        <td class="alert-icon">${isRecentlyUpdated(emergency.submissionDate) ? '<i class="fas fa-bell"></i>' : ''}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error(error);
+                alert('Failed to fetch emergencies. Please try again later.');
+            }
+        }
+
+        // Function to check if a date is recently updated (e.g., within the last 24 hours)
+        function isRecentlyUpdated(submissionDate) {
+            const twentyFourHoursAgo = new Date();
+            twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+            return new Date(submissionDate) > twentyFourHoursAgo;
+        }
+
+        // Function to display current date/time
+        function displayCurrentDateTime() {
+            const currentDateTimeElement = document.getElementById('currentDateTime');
+            const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
+            currentDateTimeElement.textContent = `Current Date/Time: ${currentDateTime}`;
+        }
+
+        // Fetch emergencies and display current date/time when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchEmergencies();
+            displayCurrentDateTime();
+        });
+
+
+        async function fetchEmergencies() {
+    try {
+        const response = await fetch('/api/disasters');
+        if (!response.ok) {
+            throw new Error('Failed to fetch emergencies');
+        }
+        const emergencies = await response.json();
+        const tableBody = document.querySelector('#emergencyTable tbody');
+        tableBody.innerHTML = ''; // Clear existing table rows
+        emergencies.forEach(emergency => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${emergency.name}</td>
+                <td>${emergency.location}</td>
+                <td>${emergency.description}</td>
+                <td>${emergency.submissionDate}</td> <!-- Display submission date -->
+                <td class="alert-icon">${isRecentlyUpdated(emergency.submissionDate) ? '<i class="fas fa-bell"></i>' : ''}</td>
+            `;
+            // Insert the row at the beginning of the table body
+            tableBody.insertBefore(row, tableBody.firstChild);
+        });
+    } catch (error) {
+        console.error(error);
+        alert('Failed to fetch emergencies. Please try again later.');
+    }
+}
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQyBdBCWH5BHQeYU5kZcMyyWe-ZwPGCUg&libraries=places&callback=initMap" async defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        background-image: url('new.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    
+    
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    
+    form {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-weight: bold;
+    }
+    
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    button[type="submit"],
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    button[type="submit"]:hover,
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    .contact-button {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    /* Navbar Styles */
+    nav {
+        background-color: #333;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .left,
+    .right {
+        display: flex;
+        align-items: center;
+    }
+
+    nav a {
+        float: none;
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    nav a:hover {
+        background-color: #ddd;
+        color: black;
+        text-decoration: none;
+    }
+
+  
+    .home-icon {
+        font-size: 20px;
+        color: white;
+        margin-right: 10px;
+    }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+/* 
+    .logo {
+        width: 50px;
+        height: auto;
+        margin-right: 10px;
+    } */
+    #map {
+    height: 400px;
+    width: 100%;
+  }
+  
+</style>
+</head>
+<body>
+   
+    <!-- nav -->
+    <nav>
+        <div class="left">
+            <!-- <a href="#" class="logo-link">
+                <img src="logo.png" alt="Logo" class="logo">
+            </a> -->
+        </div>
+        
+        <div class="right">
+            <a href="#" class="logo-link">
+                <i class="fas fa-home home-icon"></i>
+            </a>
+            <a href="/emergency">Emergencies</a>
+           
+            <a href="/about">About Us</a>
+        </div>
+    </nav>
+    <!-- navend -->
+   
+    <div class="row">
+        <div style="background-color: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <h2 style="color: #333; text-align:center;">Welcome to Our Disaster Reporting Website</h2>
+            <p style="text-align:justify;">Our website is dedicated to providing a platform for reporting emergencies and disasters
+                 promptly. With the increasing frequency and severity of natural and man-made disasters, 
+                it's crucial to have a streamlined system for reporting  incidents to authorities for 
+                swift response and assistance.Whether it's a fire outbreak, medical emergency, 
+                natural calamity, or any other crisis situation, our website allows users to 
+                submit detailed reports, including the name of the emergency, location, description, and time of occurrence.
+                By leveraging modern technology and efficient communication channels, we aim to 
+                connect individuals in distress with emergency services, ensuring timely aid and support to affected communities.Join us in our mission to improve disaster response and contribute to building safer and more resilient communities.
+            </p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>Report Emergency</h1>
+        <form id="emergencyForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" required><br><br>
+            <label for="emergencyName">Emergency Name:</label>
+            <select id="emergencyName" name="emergencyName" required style="width: 200px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;">
+                <option value="">Select an emergency name...</option>
+                <option value="Earthquake">Earthquake</option>
+                <option value="Flood">Flood</option>
+                <option value="Tsunami">Tsunami</option>
+                <option value="Wildfire">Wildfire</option>
+                <option value="Snowstorm">Snowstorm</option>
+                <option value="Drought">Drought</option>
+                <option value="Industrial Accidents">Industrial Accidents</option>
+                <option value="Nuclear Accidents">Nuclear Accidents</option>
+                <option value="Chemical Spills / Releases">Chemical Spills / Releases</option>
+                <option value="Terrorism / Acts of Violence">Terrorism / Acts of Violence</option>
+                <option value="Explosions">Explosions</option>
+                <option value="Ecological Disasters">Ecological Disasters</option>
+                <option value="Pandemics">Pandemics</option>
+                <option value="Epidemics">Epidemics</option>
+                <option value="Food Contamination / Poisoning">Food Contamination / Poisoning</option>
+                <option value="Biological Threats">Biological Threats</option>
+                <option value="Public Health Emergencies">Public Health Emergencies</option>
+                <option value="Pollution Incidents"> Pollution Incidents</option>
+                <option value="Vehicle Accidents">Vehicle Accidents</option>
+                <option value="Airplane Crashes">Airplane Crashes</option>
+                <option value="Train Derailments">Train Derailments</option>
+                <option value="Maritime Accidents">Maritime Accidents</option>
+                <option value="Refugee Crises">Refugee Crises</option>
+                <option value="Dam Failures"> Dam Failures</option>
+                <option value="Bridge Collapses">Bridge Collapses</option>
+                <option value="Building Collapses">Building Collapses</option>
+
+
+
+
+            </select><br><br>
+            
+            
+            <label for="emergencyLocation">Location:</label><div id="map"></div>
+            <input type="text" id="emergencyLocation" name="emergencyLocation" placeholder="type your location"><br><br>
+            
+            <label for="emergencyDescription">Description:</label><br>
+            <textarea id="emergencyDescription" name="emergencyDescription" rows="4" cols="50" required></textarea><br><br>
+            
+            <center><button type="submit">Submit</button></center>
+        </form>
+    </div>
+
+
+
+
+   
+</div>
+</div>
+    <script>
+        document.getElementById('emergencyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const emergencyData = {
+                personName:formData.get('name'),
+                phone:formData.get('phone'),
+                name: formData.get('emergencyName'),
+                location: formData.get('emergencyLocation'),
+                description: formData.get('emergencyDescription'),
+                submissionDate: new Date().toISOString() // Include current date/time
+            };
+    
+            try {
+                const response = await fetch('/api/disasters', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(emergencyData)
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to report emergency');
+                }
+                alert('Emergency reported successfully:\n\n' +
+                      `Name: ${emergencyData.name}\n` +
+                      `Location: ${emergencyData.location}\n` +
+                      `Description: ${emergencyData.description}\n` +
+                      `Date/Time: ${emergencyData.submissionDate}`);
+                document.getElementById('emergencyForm').reset();
+            } catch (error) {
+                console.error(error);
+                alert('Failed to report emergency. Please try again later.');
+            }
+        });
+    
+        document.getElementById('contactButton').addEventListener('click', function() {
+            // Replace '1234567890' with the desired phone number
+            window.location.href = 'tel:+1234567890';
+        });
+     
+        let map;
+
+        function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+    });
+
+    // Get user's current location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            map.setCenter(userLocation);
+            const marker = new google.maps.Marker({
+                position: userLocation,
+                map: map,
+                title: 'Your Location'
+            });
+        }, function(error) {
+            handleLocationError(error, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError({ code: 0 }, map.getCenter());
+    }
+}
+
+function handleLocationError(error, pos) {
+    let errorMessage = '';
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            errorMessage = 'User denied the request for Geolocation.';
+            break;
+        case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information is unavailable.';
+            break;
+        case error.TIMEOUT:
+            errorMessage = 'The request to get user location timed out.';
+            break;
+        case error.UNKNOWN_ERROR:
+            errorMessage = 'An unknown error occurred.';
+            break;
+    }
+    console.error(`Error: ${errorMessage}`);
+}
+    </script>
+    
+</body>
+</html>
